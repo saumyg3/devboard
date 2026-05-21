@@ -11,21 +11,21 @@ export default function Dashboard({ user, setUser }) {
   const [syncStatus, setSyncStatus] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/tasks', { credentials: 'include' })
+    fetch('https://devboard-backend-jx14.onrender.com/api/tasks', { credentials: 'include' })
       .then(r => r.json()).then(setTasks).catch(() => {})
-    fetch('http://localhost:3001/api/repos', { credentials: 'include' })
+    fetch('https://devboard-backend-jx14.onrender.com/api/repos', { credentials: 'include' })
       .then(r => r.json()).then(setRepos).catch(() => {})
   }, [])
 
   useEffect(() => {
     if (!activeRepo) return
-    fetch(`http://localhost:3001/api/repos/${activeRepo.full_name}/pulls`, { credentials: 'include' })
+    fetch(`https://devboard-backend-jx14.onrender.com/api/repos/${activeRepo.full_name}/pulls`, { credentials: 'include' })
       .then(r => r.json()).then(setPrs).catch(() => {})
   }, [activeRepo])
 
   const syncRepos = () => {
     setSyncStatus('syncing')
-    fetch('http://localhost:3001/api/repos/sync', { method: 'POST', credentials: 'include' })
+    fetch('https://devboard-backend-jx14.onrender.com/api/repos/sync', { method: 'POST', credentials: 'include' })
       .then(r => r.json())
       .then(data => {
         setRepos(data)
@@ -36,7 +36,7 @@ export default function Dashboard({ user, setUser }) {
   }
 
   const addTask = (task) => {
-    fetch('http://localhost:3001/api/tasks', {
+    fetch('https://devboard-backend-jx14.onrender.com/api/tasks', {
       method: 'POST', credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(task)
@@ -44,7 +44,7 @@ export default function Dashboard({ user, setUser }) {
   }
 
   const updateTask = (id, updates) => {
-    fetch(`http://localhost:3001/api/tasks/${id}`, {
+    fetch(`https://devboard-backend-jx14.onrender.com/api/tasks/${id}`, {
       method: 'PATCH', credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates)
@@ -54,12 +54,12 @@ export default function Dashboard({ user, setUser }) {
   }
 
   const deleteTask = (id) => {
-    fetch(`http://localhost:3001/api/tasks/${id}`, { method: 'DELETE', credentials: 'include' })
+    fetch(`https://devboard-backend-jx14.onrender.com/api/tasks/${id}`, { method: 'DELETE', credentials: 'include' })
       .then(() => setTasks(prev => prev.filter(t => t.id !== id))).catch(() => {})
   }
 
   const logout = () => {
-    fetch('http://localhost:3001/auth/logout', { method: 'POST', credentials: 'include' })
+    fetch('https://devboard-backend-jx14.onrender.com/auth/logout', { method: 'POST', credentials: 'include' })
       .then(() => setUser(null))
   }
 

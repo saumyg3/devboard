@@ -8,7 +8,7 @@ export default function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('http://localhost:3001/auth/me', { credentials: 'include' })
+    fetch('https://devboard-backend-jx14.onrender.com/auth/me', { credentials: 'include' })
       .then(r => r.json())
       .then(data => { if (data.user) setUser(data.user) })
       .catch(() => {})
