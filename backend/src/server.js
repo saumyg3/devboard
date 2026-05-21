@@ -8,18 +8,28 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.set('trust proxy', 1);
+
+app.use(cors({ 
+  origin: process.env.CLIENT_URL, 
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }
+  cookie: { 
+    secure: true,
+    sameSite: 'none',
+    maxAge: 24 * 60 * 60 * 1000 
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// GitHub OAuth strategy
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
